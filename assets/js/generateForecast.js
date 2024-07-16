@@ -19,17 +19,23 @@ let generateImage = function (WeatherConditions) {
 };
 
 let getFiveDays = function (weather) {
-    let daily = weather.daily
+    if (!weather || !weather.list || weather.list.length === 0) {
+        console.error('No forecast data available');
+        return;
+    }
+
 
     let fiveDay = document.querySelector('#five-day')
-
     fiveDay.innerHTML = ' '
-    for (let i = 0; i< daily.length - 3; i++) {
+
+    for (let i = 0; i< 5; i++) {
+        let daily = weather.list[i * 8];
+
         let dateHeadingCount = FutureCheck(i);
-        let dailyWeatherConditions = daily[i].weather[0].id;
-        let dailyTemp = daily[i].temp.day;
-        let dailyWind = daily[i].wind_speed;
-        let dailyHumidity = daily[i].humidity;
+        let dailyWeatherConditions = daily.weather[0].id;
+        let dailyTemp = daily.main.temp;
+        let dailyWind = daily.wind.speed;
+        let dailyHumidity = daily.main.humidity;
 
         let dayDivEl = document.createElement('div');
         let dateHeadingEl = document.createElement('h3');
@@ -40,7 +46,7 @@ let getFiveDays = function (weather) {
 
         let dailyIcon = generateImage(dailyWeatherConditions);
 
-        dayDivEl.setAttribute('class', 'card col-auto bg-info m1 border border-dark');
+        dayDivEl.setAttribute('class', 'card col-auto bg-info m-1 border border-dark');
         dateHeadingEl.setAttribute('class', 'card-text text-black');
         daytempLiEl.setAttribute('class', 'card-text text-black');
         daywindLiEl.setAttribute('class', 'card-text text-black');
