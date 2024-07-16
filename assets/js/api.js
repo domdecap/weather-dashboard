@@ -1,6 +1,7 @@
 const APIkey = "ef2c2c6991b3d98d4dd604ae3b8915e9";
 const part = 'alerts,minutely';
 
+
 let locationCatch = function (event) {
     event.preventDefault();
     let cityCapture = document.querySelector('#city-capture').value.trim();
@@ -23,9 +24,9 @@ let locationApiCall = function (cityname) {
     fetch(apiUrl)
     .then(response => response.json())
     .then(function (response) {
-        let lat = response.coord.lat;
-        let lon = response.coord.lon
-        locationApiCall(lat, lon, cityname)
+        let lat = response[0].lat;
+        let lon = response[0].lon;
+        apiCall(lat, lon, cityname)
     })
     .catch(err => alert ('Not found'))
 };
@@ -36,6 +37,8 @@ let apiCall = function (lat, lon, cityname) {
     fetch(apiUrl)
     .then(response => response.json())
     .then(function (response) {
+        console.log(response); // Add this line to check the API response
+
         generateCurrent(response, cityname);
         getFiveDays(response);
     });

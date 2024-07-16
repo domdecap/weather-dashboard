@@ -1,16 +1,21 @@
 let generateCurrent = function (weather, cityname) {
-    let current = weather.current;
+    if (!weather || !weather.list || weather.list.length === 0) {
+        console.error('No current weather data available');
+        return;
+    }
+    
+    let current = weather.list[0];
 
     let headingEl = document.querySelector('#location');
     headingEl.textContent = cityname + " " + TimeCheck();
 
-    let temp = current.temp;
-    let wind = current.wind_speed;
-    let humidity = current.humidity;
-    let uvIndex = current.uvi;
+    let temp = current.main.temp;
+    let wind = current.wind.speed;
+    let humidity = current.main.humidity;
+    let description = current.weather[0].description;
 
-    let uvIndexLiEl = document.createElement('li')
-    uvIndexLiEl.textContent = 'UV Index: ${uvIndex}'
+    let descriptionLiEl = document.createElement('li')
+    descriptionLiEl.textContent = `Description: ${description}`
 
     let currentConditions = document.querySelector('#current-conditions')
 
@@ -19,6 +24,6 @@ let generateCurrent = function (weather, cityname) {
     <li> Wind: ${wind} MPH </li>
     <li> Humidity: ${humidity} %</li>
     `
-    currentConditions.appendChild(uvIndexLiEl)
-    checkUVIndex(uvIndex, uvIndexLiEl)
+    currentConditions.appendChild(descriptionLiEl);
+    
 };
